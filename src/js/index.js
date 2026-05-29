@@ -1,4 +1,4 @@
-import { fetchUserProfile } from './api.js';
+import { fetchUserProfile, fetchUserRepos } from './api.js';
 import { renderUserProfile } from './ui.js';
 
 const inputSearch = document.getElementById('input-search');
@@ -16,9 +16,10 @@ btnSearch.addEventListener('click', async() => {
     profileResults.innerHTML = '<p class="loading">Carregando...</p>';
     try {
         const userData = await fetchUserProfile(username);
-        renderUserProfile(userData, profileResults);
+        const userRepos = await fetchUserRepos(username);
+        renderUserProfile(userData, userRepos, profileResults);
     } catch (error) {
-        console.error('Erro ao buscar perfil do usuário:', error);
+        console.error('Erro ao realizar a busca:', error);
         alert('Usuario não encontrado. Por favor, verifique o nome de usuário e tente novamente.');
         profileResults.innerHTML = '';
     }
